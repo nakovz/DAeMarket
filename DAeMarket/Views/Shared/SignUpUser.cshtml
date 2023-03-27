@@ -1,0 +1,47 @@
+﻿@model DAeMarket.ViewModels.UsersViewModel
+
+@{
+    ViewBag.Title = "SignUpUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center;">@Model.Store.Name</h2>
+<h3 style="text-align:center;">@Model.Store.Slogan</h3>
+<br />
+
+
+@using(Html.BeginForm("SignUpNewUser", "Users")) {
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Password)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, "Confirm password")
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=>m.ConfirmPassword)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName)
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateOfBirth)
+        @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone)
+        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+    </div>
+    @Html.HiddenFor(m => m.Store.Id, new { @class = "form-control" })
+    <button type="submit" class="btn btn-primary">Sign Up Me!</button>
+}

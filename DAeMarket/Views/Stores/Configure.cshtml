@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DAeMarket.Models.Store>
+@{
+    ViewBag.Title = "Configure";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert alert-danger">
+    <h2 class="text-center">Configure Stores</h2>
+    <h4 class="text-center">List of Stores</h4>
+
+    <table class="table table-hover modal-dialog" style="margin:0px;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Slogan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model) {
+                <tr>
+
+                    <td>@Html.ActionLink(m.Name, "EditStore", "Stores", new { id = m.Id }, null)</td>
+                    <td>@m.Slogan</td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<div style="width: fit-content; margin: auto;">
+    <button onclick="location.href='@Url.Action("NewStore","Stores")'">Create New Store</button>
+</div>

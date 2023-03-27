@@ -1,0 +1,28 @@
+﻿@model DAeMarket.ViewModels.UsersViewModel
+@{
+    ViewBag.Title = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+<h2 style="text-align:center;">@Model.Store.Name</h2>
+<h3 style="text-align:center;">@Model.Store.Slogan</h3>
+<br />
+
+<div style="margin:auto;width: fit-content;">
+
+    @using (Html.BeginForm("LogInUser", "Stores")) {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+        @Html.HiddenFor(m => m.Store.Id, new { @class = "form-control" })
+        <button type="button" class="btn btn-success" style="margin-right:100px;" onclick="location.href='@Url.Action("SignUpUser","Stores", new { id = Model.Store.Id }, null)'">Sign Up</button>
+        <button type="submit" class="btn btn-primary">Log In</button>
+    }
+</div>

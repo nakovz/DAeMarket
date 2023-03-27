@@ -1,0 +1,26 @@
+﻿@model DAeMarket.ViewModels.ItemsInStoreViewModel
+
+@if (Model.Items.Count() == 0) {
+    <p>There is no Items in @Model.Store.Name</p>
+} else {
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Sale Price</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items) {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@Html.ActionLink(item.Name, "EditStore", "Stores", new { id = item.StoreId, itemId = item.Id }, null)</td>
+                    <td>@item.Description</td>
+                    <td>@item.SalePrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

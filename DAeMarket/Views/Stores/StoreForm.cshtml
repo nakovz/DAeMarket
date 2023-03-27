@@ -1,0 +1,75 @@
+﻿@model DAeMarket.ViewModels.ItemsInStoreViewModel
+@{
+    ViewBag.Title = "StoreForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SaveStoreInfo", "Stores")) {
+    <div class="alert alert-info">
+        <div style="display:grid; grid-gap:10px;">
+            <div class="text-center" style="font-size:large; font-weight:bold; grid-column:1 / span 5; grid-row:1;">Store Info</div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Store.Name)
+                @Html.TextBoxFor(m => m.Store.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Store.Name)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Store.Slogan)
+                @Html.TextBoxFor(m => m.Store.Slogan, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Store.Slogan)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Store.SuperUser)
+                @Html.TextBoxFor(m => m.Store.SuperUser, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Store.SuperUser)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Store.SuperPassword)
+                @Html.PasswordFor(m => m.Store.SuperPassword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Store.SuperPassword)
+            </div>
+            @Html.HiddenFor(m => m.Store.Id, new { @class = "form-control" })
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("SaveItem", "Stores")) {
+    <div class="alert alert-success" style="display:grid; grid-gap:10px;">
+        <div style="grid-row: 1; grid-column: 1 / span 9; text-align: center; font-weight: bold;">Items In Store</div>
+        <div style="grid-row: 2 / span 2; grid-column: 1 / span 7;">
+            @Html.Partial("_ListOfItemsInStore", Model)
+        </div>
+        <div style="grid-row: 2 / span 2;">
+            <span class="form-group">
+                @Html.LabelFor(m => m.selectedItem.Id)
+                @Html.TextBoxFor(m => m.selectedItem.Id, new { @readonly="readonly", @class = "form-control" })
+            </span>
+            <span class="form-group">
+                @Html.LabelFor(m => m.selectedItem.Name)
+                @Html.TextBoxFor(m => m.selectedItem.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.selectedItem.Name)
+            </span>
+            <span class="form-group">
+                @Html.LabelFor(m => m.selectedItem.Price)
+                @Html.TextBoxFor(m => m.selectedItem.Price, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.selectedItem.Price)
+            </span>
+            <span class="form-group">
+                @Html.LabelFor(m => m.selectedItem.SalePrice)
+                @Html.TextBoxFor(m => m.selectedItem.SalePrice, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.selectedItem.SalePrice)
+            </span>
+            <span class="form-group">
+                @Html.LabelFor(m => m.selectedItem.Description)
+                @Html.TextBoxFor(m => m.selectedItem.Description, new { @class = "form-control" })
+            </span>
+        </div>
+        @Html.HiddenFor(m => m.Store.Id, new { @class = "form-control" })
+        <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("EditStore", "Stores", new { id = Model.Store.Id })'">New Item</button>
+        <button type="submit" class="btn btn-primary">Save Item</button>
+    </div>
+}
+
+
+@Html.Partial("_ModalMessageBoxFromViewBag")
