@@ -19,6 +19,7 @@ namespace DAeMarket.Controllers
         protected override void Dispose(bool disposing) {
             _context.Dispose();
         }
+
         // GET: Stores
         public ActionResult Index() {
 
@@ -56,6 +57,7 @@ namespace DAeMarket.Controllers
             return Content("Wellcome MASTER!");
         }
 
+
         public ActionResult SignUpUser(int Id) {
             var store = _context.Stores.SingleOrDefault(s => s.Id == Id);
 
@@ -71,8 +73,8 @@ namespace DAeMarket.Controllers
             return View(stores);
         }
 
-        public ActionResult EditStore(int id, int itemId = 0) {
-            var store = _context.Stores.SingleOrDefault(s => s.Id == id);
+        public ActionResult EditStore(int StoreId, int selectedItemId = 0) {
+            var store = _context.Stores.SingleOrDefault(s => s.Id == StoreId);
             if (store == null) {
                 return HttpNotFound();
             }
@@ -82,7 +84,7 @@ namespace DAeMarket.Controllers
             var viewModel = new ItemsInStoreViewModel() {
                 Store = store,
                 Items = items,
-                selectedItem = _context.Items.FirstOrDefault(i => i.StoreId == id && i.Id == itemId)
+                SelectedItem = _context.Items.FirstOrDefault(i => i.StoreId == store.Id && i.Id == selectedItemId)
             };
 
             if (TempData["shortMessage"] != null) {
@@ -93,9 +95,24 @@ namespace DAeMarket.Controllers
         }
 
         public ActionResult NewStore() {
-            var viewModel = new ItemsInStoreViewModel();
+            var viewModel = new ItemsInStoreViewModel() {
+                Store = new Store(),
+                Items = new List<Items>().AsEnumerable(),
+                SelectedItem = new Items()
+            };
 
             return View("StoreForm", viewModel);
+        }
+
+        public ActionResult DeleteItem(int StoreId, int ItemId) {
+            var item = _context.Items.FirstOrDefault(i => i.StoreId == StoreId && i.Id == ItemId);
+            if (item != null) {
+                _context.Items.Remove(item);
+                _context.SaveChanges();
+                TempData["shortMessage"] = "Item successfully deleted!";
+            }
+
+            return RedirectToAction("EditStore", new { StoreId });
         }
 
         [HttpPost]
@@ -115,13 +132,13 @@ namespace DAeMarket.Controllers
             IEnumerable<Items> items = _context.Items.Where(i => i.StoreId == viewModel.Store.Id).AsEnumerable();
             viewModel.Items = items;
 
-            ViewBag.Message = "Store Info is succesfuly saved!";
-            return View("StoreForm", viewModel);
+            TempData["shortMessage"] = "Store Info successfully saved!";
+            return RedirectToAction("EditStore", new { StoreId = viewModel.Store.Id });
         }
 
         [HttpPost]
         public ActionResult SaveItem(ItemsInStoreViewModel viewModel) {
-            var itemInDB = _context.Items.SingleOrDefault(s => s.StoreId == viewModel.Store.Id && s.Id == viewModel.selectedItem.Id);
+            var itemInDB = _context.Items.SingleOrDefault(s => s.StoreId == viewModel.Store.Id && s.Id == viewModel.SelectedItem.Id);
             var item = new Items();
 
             if (itemInDB == null) {
@@ -131,10 +148,10 @@ namespace DAeMarket.Controllers
                 Items.MapValuesFromViewModel(itemInDB, viewModel);
             }
             _context.SaveChanges();
-            viewModel.selectedItem = itemInDB ?? item;
+            viewModel.SelectedItem = itemInDB ?? item;
 
-            TempData["shortMessage"] = "Item succesfuly saved!";
-            return RedirectToAction("EditStore", new { id = viewModel.Store.Id, itemId = viewModel.selectedItem.Id });
+            TempData["shortMessage"] = "Item successfully saved!";
+            return RedirectToAction("EditStore", new { StoreId = viewModel.Store.Id, selectedItemId = viewModel.SelectedItem.Id });
         }
     }
 }

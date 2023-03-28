@@ -32,23 +32,26 @@ namespace DAeMarket.Models {
         [Required]
         public int StoreId { get; set; }
 
+        public Items() {
+
+        }
         internal static Items NewItemFromViewModel(ItemsInStoreViewModel viewModel) {
             return new Items {
-                Id = viewModel.selectedItem.Id,
-                Name = viewModel.selectedItem.Name,
-                Description = viewModel.selectedItem.Description,
-                Price = viewModel.selectedItem.Price,
-                SalePrice = viewModel.selectedItem.SalePrice,
+                Id = viewModel.SelectedItem.Id,
+                Name = viewModel.SelectedItem.Name,
+                Description = viewModel.SelectedItem.Description,
+                Price = viewModel.SelectedItem.Price,
+                SalePrice = viewModel.SelectedItem.SalePrice,
                 ItemTypeId = ItemType.Virtual,
                 StoreId = viewModel.Store.Id
             };
         }
 
         public static void MapValuesFromViewModel(Items itemInDB, ItemsInStoreViewModel viewModel) {
-            itemInDB.Name = viewModel.selectedItem.Name;
-            itemInDB.Description = viewModel.selectedItem.Description;
-            itemInDB.Price = viewModel.selectedItem.Price;
-            itemInDB.SalePrice = viewModel.selectedItem.SalePrice;
+            itemInDB.Name = viewModel.SelectedItem.Name;
+            itemInDB.Description = viewModel.SelectedItem.Description;
+            itemInDB.Price = viewModel.SelectedItem.Price;
+            itemInDB.SalePrice = viewModel.SelectedItem.SalePrice;
             itemInDB.StoreId = viewModel.Store.Id;
         }
     }

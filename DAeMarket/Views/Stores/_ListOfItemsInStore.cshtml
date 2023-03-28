@@ -10,15 +10,27 @@
                 <td>Name</td>
                 <td>Description</td>
                 <td>Sale Price</td>
+                <td class="text-center">Delete</td>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Items) {
                 <tr>
                     <td>@item.Id</td>
-                    <td>@Html.ActionLink(item.Name, "EditStore", "Stores", new { id = item.StoreId, itemId = item.Id }, null)</td>
+                    <td>@Html.ActionLink(item.Name, "EditStore", "Stores", new { StoreId = item.StoreId, selectedItemId = item.Id }, null)</td>
                     <td>@item.Description</td>
                     <td>@item.SalePrice</td>
+                    <td>
+                        @*<a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>*@
+                        <a href="#" data-href="@Url.Action("DeleteItem","Stores", new { StoreId=item.StoreId, ItemId=item.Id })" 
+                           data-content="Id: @item.Id<br>Name: @item.Name<br>Description: @item.Description<br>Price: @item.Price<br>SalePrice: @item.SalePrice" 
+                           data-toggle="modal" data-target="#confirm-delete" class="center-block text-center">
+                            <span class="btn-danger btn-sm glyphicon glyphicon-remove" style="padding: 2px 5px;"></span>
+                        </a>
+                        @*<a href="@Url.Action("DeleteItem","Stores", new { StoreId = item.StoreId, ItemId = item.Id })" class="center-block text-center">
+                            <span class="btn-danger btn-sm glyphicon glyphicon-remove" style="padding: 2px 5px;"></span>
+                        </a>*@
+                    </td>
                 </tr>
             }
         </tbody>

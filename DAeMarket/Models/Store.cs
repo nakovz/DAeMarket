@@ -11,5 +11,12 @@ namespace DAeMarket.Models {
         public string SuperUser { get; set; }
         public string SuperPassword { get; set; }
 
+        public Store() {
+            Name = "New eStore";
+            Slogan = "Store slogan";
+            SuperUser = "admin";
+            SuperPassword = "admin";
+        }
+
     }
 }

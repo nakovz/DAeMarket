@@ -9,6 +9,6 @@ namespace DAeMarket.ViewModels {
         public Store Store { get; set; }
         public IEnumerable<Items> Items { get; set; }
 
-        public Items selectedItem { get; set; }
+        public Items SelectedItem { get; set; }
     }
 }

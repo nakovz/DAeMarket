@@ -9,6 +9,8 @@ using System.Web.Routing;
 namespace DAeMarket {
     public class MvcApplication : System.Web.HttpApplication {
         protected void Application_Start() {
+            Application["ApplicationTitle"] = "DAeMarket";
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

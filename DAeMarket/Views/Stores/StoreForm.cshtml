@@ -42,34 +42,110 @@
         </div>
         <div style="grid-row: 2 / span 2;">
             <span class="form-group">
-                @Html.LabelFor(m => m.selectedItem.Id)
-                @Html.TextBoxFor(m => m.selectedItem.Id, new { @readonly="readonly", @class = "form-control" })
+                @Html.LabelFor(m => m.SelectedItem.Id)
+                @Html.TextBoxFor(m => m.SelectedItem.Id, new { @readonly = "readonly", @class = "form-control" })
             </span>
             <span class="form-group">
-                @Html.LabelFor(m => m.selectedItem.Name)
-                @Html.TextBoxFor(m => m.selectedItem.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.selectedItem.Name)
+                @Html.LabelFor(m => m.SelectedItem.Name)
+                @Html.TextBoxFor(m => m.SelectedItem.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SelectedItem.Name)
             </span>
             <span class="form-group">
-                @Html.LabelFor(m => m.selectedItem.Price)
-                @Html.TextBoxFor(m => m.selectedItem.Price, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.selectedItem.Price)
+                @Html.LabelFor(m => m.SelectedItem.Price)
+                @Html.TextBoxFor(m => m.SelectedItem.Price, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SelectedItem.Price)
             </span>
             <span class="form-group">
-                @Html.LabelFor(m => m.selectedItem.SalePrice)
-                @Html.TextBoxFor(m => m.selectedItem.SalePrice, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.selectedItem.SalePrice)
+                @Html.LabelFor(m => m.SelectedItem.SalePrice)
+                @Html.TextBoxFor(m => m.SelectedItem.SalePrice, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SelectedItem.SalePrice)
             </span>
             <span class="form-group">
-                @Html.LabelFor(m => m.selectedItem.Description)
-                @Html.TextBoxFor(m => m.selectedItem.Description, new { @class = "form-control" })
+                @Html.LabelFor(m => m.SelectedItem.Description)
+                @Html.TextBoxFor(m => m.SelectedItem.Description, new { @class = "form-control" })
             </span>
         </div>
         @Html.HiddenFor(m => m.Store.Id, new { @class = "form-control" })
-        <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("EditStore", "Stores", new { id = Model.Store.Id })'">New Item</button>
+        <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("EditStore", "Stores", new { StoreId = Model.Store.Id })'">New Item</button>
         <button type="submit" class="btn btn-primary">Save Item</button>
     </div>
 }
 
 
-@Html.Partial("_ModalMessageBoxFromViewBag")
+@* Can't use Html.Partial because we must have only one window.onload function *@
+
+@*@Html.Partial("_ModalMessageBoxFromViewBag")*@
+
+@*@Html.Partial("_ModalDeleteMessageBox")*@
+
+@{
+    string viewBagNull = "";
+
+    if (ViewBag.Message == null) {
+        viewBagNull = "true";
+    } else {
+        viewBagNull = "false";
+    }
+}
+
+<script type="text/javascript">
+    window.onload = function () {
+        if (@viewBagNull == false) {
+            var div = document.createElement("div");
+
+            div.innerHTML =
+                '<div class="modal fade" id="myModal" role="dialog">\n' +
+                '<div class="modal-dialog">\n' +
+                '<!-- Modal content-->\n' +
+                '<div class="modal-content">\n' +
+                '<div class="modal-header">\n' +
+                '<button type="button" class="close" data-dismiss="modal">&times;</button>\n' +
+                '<h4 class="modal-title">Message</h4>\n' +
+                '</div>\n' +
+                '<div class="modal-body">\n' +
+                '<p>@ViewBag.Message</p>\n' +
+                '</div>\n' +
+                '<div class="modal-footer">\n' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n' +
+                '</div>\n' +
+                '</div>\n' +
+                '</div>\n' +
+                '</div>';
+
+            document.body.appendChild(div);
+
+            $("#myModal").modal();
+        }
+
+        var div1 = document.createElement("div");
+
+        div1.innerHTML =
+            '<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n' +
+            '<div class="modal-dialog">\n' +
+            '<div class="modal-content">\n' +
+            '<div class="modal-header">\n' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\n' +
+            '<h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>\n' +
+            '</div>\n' +
+            '<div class="modal-body">\n' +
+            '<p>You are about to delete Item, this procedure is irreversible.</p>\n' +
+            '<p class="debug-url"></p>\n' +
+            '<p>Do you want to proceed?</p>\n' +
+            '</div>\n' +
+            '<div class="modal-footer">\n' +
+            '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>\n' +
+            '<a class="btn btn-danger btn-ok">Delete</a>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '</div>\n' +
+            '</div>';
+
+        document.body.appendChild(div1);
+
+        $('#confirm-delete').on('show.bs.modal', function (e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+
+            $('.debug-url').html('<strong>' + $(e.relatedTarget).data('content') + '</strong>');
+        });
+    };
+</script>
